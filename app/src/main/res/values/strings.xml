@@ -3,4 +3,6 @@
     <string name="title_menu_bottom_biblioteca">Biblioteca</string>
     <string name="title_menu_bottom_pesquisar">Pesquisar</string>
     <string name="title_menu_bottom_home">Home</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello fragment</string>
 </resources>
