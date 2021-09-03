@@ -43,7 +43,7 @@ class HomeFragment : Fragment() {
             val albums: MutableList<Album> = ArrayList()
             for(mAlbums in 0..19){
                 val album = Album()
-                album.album = R.drawable.spotify
+                //album.album = R.drawable.spotify
                 albums.add(album)
             }
 
@@ -105,7 +105,7 @@ class HomeFragment : Fragment() {
     private inner class AlbumsHolder(binding: AlbumItemBinding): RecyclerView.ViewHolder(binding.root){
         private val mImageAlbum = binding.imageAlbum
         fun bind(album: Album) {
-            mImageAlbum.setImageResource(album.album)
+            //mImageAlbum.setImageResource(album.album)
         }
     }
 }
