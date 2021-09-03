@@ -1,13 +1,12 @@
-package com.johncoimbra.spotifyclone
+package com.johncoimbra.spotifyclone.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.FrameLayout
-import android.widget.SearchView
 import androidx.fragment.app.Fragment
+import com.johncoimbra.spotifyclone.R
 import com.johncoimbra.spotifyclone.databinding.ActivityMainBinding
 import com.johncoimbra.spotifyclone.extensions.addFragmentOne
-import com.johncoimbra.spotifyclone.extensions.addFragmentTwo
 import com.johncoimbra.spotifyclone.fragments.HomeFragment
 import com.johncoimbra.spotifyclone.fragments.LibraryFragment
 import com.johncoimbra.spotifyclone.fragments.SearchFragment
@@ -21,6 +20,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        supportActionBar!!.hide()
 
         loadFragment(HomeFragment())
 

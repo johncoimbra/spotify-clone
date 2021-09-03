@@ -12,7 +12,6 @@ fun Activity.addFragmentOne(mFLoaded: Fragment, mSFManager: FragmentManager, mFL
     fragment.commit()
 }
 
-//EXEMPLO DA AULA
 fun Activity.addFragmentTwo(mFragment: Fragment, supportFragmentManager: FragmentManager){
     supportFragmentManager
         .beginTransaction()

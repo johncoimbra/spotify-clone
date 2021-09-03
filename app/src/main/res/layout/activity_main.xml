@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".view.MainActivity">
 
     <FrameLayout
         android:id="@+id/content"
@@ -22,6 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/gray_dark"
+        android:layout_gravity="bottom"
         app:menu="@menu/bottom_menu"
         app:itemIconTint="@color/white"
         app:itemTextColor="@color/white"
