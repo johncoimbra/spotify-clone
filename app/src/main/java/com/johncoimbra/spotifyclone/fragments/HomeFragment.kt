@@ -4,14 +4,18 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.johncoimbra.spotifyclone.R
 import com.johncoimbra.spotifyclone.databinding.AlbumItemBinding
 import com.johncoimbra.spotifyclone.databinding.CategoryItemBinding
 import com.johncoimbra.spotifyclone.databinding.FragmentHomeBinding
-import com.johncoimbra.spotifyclone.model.Album
-import com.johncoimbra.spotifyclone.model.Category
+import com.johncoimbra.spotifyclone.model.*
+import com.squareup.picasso.Picasso
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class HomeFragment : Fragment() {
 
@@ -35,30 +39,37 @@ class HomeFragment : Fragment() {
         val bindingHome = FragmentHomeBinding.bind(view)
         //bindingFragmentHome = bindingHome
 
-        val categories: MutableList<Category> = ArrayList()
-        for (mCategory in 0..4) {
-            val category = Category()
-            category.title = "Categoria$mCategory"
+        val categories = arrayListOf<Category>()
 
-            val albums: MutableList<Album> = ArrayList()
-            for(mAlbums in 0..19){
-                val album = Album()
-                //album.album = R.drawable.spotify
-                albums.add(album)
-            }
-
-            category.albums = albums
-            categories.add(category)
-        }
         categoryAdapter = CategoryAdapter(categories)
         bindingHome.recyclerViewCategories.adapter = categoryAdapter
         bindingHome.recyclerViewCategories.layoutManager = LinearLayoutManager(context)
+
+        retrofit().create(SpotifyAPI::class.java)
+            .ListCategories()
+            .enqueue(object : Callback<Categories>{
+                override fun onResponse(call: Call<Categories>, response: Response<Categories>) {
+                    if (response.isSuccessful){
+                        response.body()?.let {
+                            categoryAdapter.categories.clear()
+                            categoryAdapter.categories.addAll(it.categories)
+                            categoryAdapter.notifyDataSetChanged()
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<Categories>, t: Throwable) {
+                    Toast.makeText(context, "Erro na chamado do servidor", Toast.LENGTH_SHORT).show()
+                }
+
+            })
+        
 
     }
 
     //---------------------------------Category Adapter-------------------------------------------//
 
-    private inner class CategoryAdapter(private val categories: MutableList<Category>) : RecyclerView.Adapter<CategoryHolder>() {
+    private inner class CategoryAdapter(internal val categories: MutableList<Category>) : RecyclerView.Adapter<CategoryHolder>() {
 
         private lateinit var binding: CategoryItemBinding //viewBinding na CategoryAdapter
 
@@ -87,7 +98,7 @@ class HomeFragment : Fragment() {
     }
     //---------------------------------Albums Adapter--------------------------------------------//
 
-    private inner class AlbumsAdapter(private val albums: MutableList<Album>): RecyclerView.Adapter<AlbumsHolder>() {
+    private inner class AlbumsAdapter(private val albums: List<Album>): RecyclerView.Adapter<AlbumsHolder>() {
         private lateinit var binding: AlbumItemBinding //viewBinding na AlbumsAdapter
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AlbumsHolder {
             binding = AlbumItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -105,7 +116,11 @@ class HomeFragment : Fragment() {
     private inner class AlbumsHolder(binding: AlbumItemBinding): RecyclerView.ViewHolder(binding.root){
         private val mImageAlbum = binding.imageAlbum
         fun bind(album: Album) {
-            //mImageAlbum.setImageResource(album.album)
+            Picasso.get()
+                .load(album.album)
+                .placeholder(R.drawable.placeholder)
+                .fit()
+                .into(mImageAlbum)
         }
     }
 }
